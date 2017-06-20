@@ -18,6 +18,18 @@ GET /megacorp/employee/_search
 --------------------------------------------------
 // SENSE: 010_Intro/35_Aggregations.json
 
+因为版本问题，5.x后对排序，聚合这些操作用单独的数据结构(fielddata)缓存到内存里了，需要单独开启，在聚合前执行如下操作
+PUT megacorp/_mapping/employee/
+{
+  "properties": {
+    "interests": { 
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+这样就可以解决了问题，否则会报illegal_argument_exception错误
+
 暂时忽略掉语法，直接看看结果：
 
 [source,js]
